@@ -4,15 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tridi program gan</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!--Scripts-->
     <script src="graphics.js" defer></script>
 
     <!--Vertex Shader-->
     <script id="vertex-shader" type="notjs">
+        // to store the position
         attribute vec4 position;
+
+        // matrix for transformations
+        uniform mat4 matriks;
+
         void main(){
-            gl_Position = position;
+            // ofkors posisi ditransform pake matriks dulu :>
+            gl_Position = matriks * position;
         }
     </script>
 
@@ -20,7 +28,7 @@
     <script id="fragment-shader" type="notjs">
         precision mediump float;
         void main(){
-            gl_FragColor = vec4(0.5,1,0,0.7);
+            gl_FragColor = vec4(0.5,1,0.7,0.7);
         }
     </script>
 </head>
