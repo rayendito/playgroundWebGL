@@ -52,9 +52,9 @@ function main(){
     }
 
     // Transformations
-    const translation = [70, 100, 0];
+    const translation = [600, 350, 0];
     const rotation = [degToRad(40), degToRad(25), degToRad(325)];
-    const scale = [1, 1, 1];
+    const scale = [4, 4, 4];
 
     drawCube();
 
@@ -64,7 +64,7 @@ function main(){
         // viewport tuh kek mana yg bakal keliatan akhirnya, not necessarily seukuran canvas
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         // warna canvasnya
-        gl.clearColor(0, 0.4, 0.7, 0.9);
+        gl.clearColor(0, 0, 0, 0);
         // actually ngewarnain
         gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -77,7 +77,7 @@ function main(){
         gl.enableVertexAttribArray(positionAttributeLocation);
 
         // kalo dari sumber, ini dipanggil lagi, but somehow it  still runs lmao keknya emang gaperlu
-        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        // gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
         // bawah ini verbatim
         // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
@@ -89,7 +89,7 @@ function main(){
         gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset)
 
         // bikin matriks transformasi finalnya abisitu apply
-        var matrix = mat4.projection(gl.canvas.clientWidth, gl.canvas.clientHeight, 200);
+        var matrix = mat4.projection(gl.canvas.clientWidth, gl.canvas.clientHeight, 400);
         matrix = mat4.translate(matrix, translation[0], translation[1], translation[2]);
         matrix = mat4.xRotate(matrix, rotation[0]);
         matrix = mat4.yRotate(matrix, rotation[1]);
