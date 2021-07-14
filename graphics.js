@@ -55,8 +55,45 @@ function main(){
     const translation = [600, 350, 0];
     const rotation = [degToRad(40), degToRad(25), degToRad(325)];
     const scale = [4, 4, 4];
-
+    
+    // drawing the initial cube
     drawCube();
+
+    // markicob mouse events hihi :D
+    // variables
+    var drag = false;
+    var oldx;
+    var oldy;
+
+    // mencet
+    var mouseDown = function(e){
+        drag = true;
+        oldx = e.pageX;
+        oldy = e.pageY;
+        // e.preventDefault();
+        return false;
+    }
+    // let go
+    var mouseUp = function(e){
+        drag = false;
+    }
+
+    // kalo geser
+    var mouseMove = function(e){
+        if(!drag) return false;
+        var dX = (e.pageX-oldx)*360/canvas.width;
+        var dY = (e.pageY-oldy)*360/canvas.height;
+        // x rotation on dY
+        rotation[0] = degToRad(((radToDeg(rotation[0])+dY)%360)/3)
+        rotation[2] = degToRad(((radToDeg(rotation[2])+dX)%360)/3)
+        drawCube()
+    }
+
+    // adding event listeners
+    canvas.addEventListener("mousedown", mouseDown, false);
+    canvas.addEventListener("mouseup", mouseUp, false);
+    canvas.addEventListener("mouseout", mouseUp, false);
+    canvas.addEventListener("mousemove", mouseMove, false);
 
     // draw cube function
     function drawCube(){
@@ -68,7 +105,7 @@ function main(){
         // actually ngewarnain
         gl.clear(gl.COLOR_BUFFER_BIT);
 
-        // use program
+        // use shader program
         gl.useProgram(program);
 
         // semacam kaya nyiapin "wadah" program shadernya
@@ -89,20 +126,20 @@ function main(){
         gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset)
 
         // bikin matriks transformasi finalnya abisitu apply
-        var matrix = mat4.projection(gl.canvas.clientWidth, gl.canvas.clientHeight, 400);
+        var matrix = mat4.projection(gl.canvas.clientWidth, gl.canvas.clientHeight, 800);
         matrix = mat4.translate(matrix, translation[0], translation[1], translation[2]);
         matrix = mat4.xRotate(matrix, rotation[0]);
         matrix = mat4.yRotate(matrix, rotation[1]);
         matrix = mat4.zRotate(matrix, rotation[2]);
         matrix = mat4.scale(matrix, scale[0], scale[1], scale[2]);
 
+        // "submit" matriksnya buat bener bener transformasi
         gl.uniformMatrix4fv(matrixUniformLocation, false, matrix);
-
 
         //gambar beneran
         var primitiveType = gl.TRIANGLES;
         var offset = 0;
-        var count = 36; //too lazy to write 36 although i just did and 6*6 takes more chars :D
+        var count = 6*6; //too lazy to write 36 although i just did and 6*6 takes more chars :D
         gl.drawArrays(primitiveType, offset, count);
     }
 }
