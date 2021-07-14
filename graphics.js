@@ -52,7 +52,7 @@ function main(){
     }
 
     // Transformations
-    const translation = [600, 350, 0];
+    const translation = [750, 350, 0];
     const rotation = [degToRad(40), degToRad(25), degToRad(325)];
     const scale = [4, 4, 4];
     
@@ -84,8 +84,8 @@ function main(){
         var dX = (e.pageX-oldx)*360/canvas.width;
         var dY = (e.pageY-oldy)*360/canvas.height;
         // x rotation on dY
-        rotation[0] = degToRad(((radToDeg(rotation[0])+dY)%360)/3)
-        rotation[1] = degToRad(((radToDeg(rotation[1])+dX)%360)/3)
+        rotation[0] = degToRad(((radToDeg(rotation[0])+dY)%360)/2)
+        rotation[1] = degToRad(-((radToDeg(rotation[1])+dX)%360)/2)
         drawCube()
     }
 
