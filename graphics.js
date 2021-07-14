@@ -85,7 +85,7 @@ function main(){
         var dY = (e.pageY-oldy)*360/canvas.height;
         // x rotation on dY
         rotation[0] = degToRad(((radToDeg(rotation[0])+dY)%360)/3)
-        rotation[2] = degToRad(((radToDeg(rotation[2])+dX)%360)/3)
+        rotation[1] = degToRad(((radToDeg(rotation[1])+dX)%360)/3)
         drawCube()
     }
 
@@ -127,11 +127,17 @@ function main(){
 
         // bikin matriks transformasi finalnya abisitu apply
         var matrix = mat4.projection(gl.canvas.clientWidth, gl.canvas.clientHeight, 800);
+        
+        //ubah pivot
+        const ubahPivot = mat4.translation(-25, -25, -25);
+
+        //transform
         matrix = mat4.translate(matrix, translation[0], translation[1], translation[2]);
         matrix = mat4.xRotate(matrix, rotation[0]);
         matrix = mat4.yRotate(matrix, rotation[1]);
         matrix = mat4.zRotate(matrix, rotation[2]);
         matrix = mat4.scale(matrix, scale[0], scale[1], scale[2]);
+        matrix = mat4.multiply(matrix, ubahPivot);
 
         // "submit" matriksnya buat bener bener transformasi
         gl.uniformMatrix4fv(matrixUniformLocation, false, matrix);
