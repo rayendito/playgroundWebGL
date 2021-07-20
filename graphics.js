@@ -61,11 +61,16 @@ function main(){
 
     // Transformations
     const translation = [canvas.width/2, canvas.height/2, 0];
-    const rotation = [degToRad(0), degToRad(0), degToRad(0)];
+    const rotation = [degToRad(25), degToRad(25), degToRad(0)];
     const scale = [6, 6, 6];
     
     // drawing the initial cube
+
+    // cull face to draw only front facing triangles
     gl.enable(gl.CULL_FACE);
+
+    // for a simple cube, ion think depth test needs to be enabled but lets just do
+    gl.enable(gl.DEPTH_TEST);
     drawCube();
 
     // markicob mouse events hihi :D
@@ -113,7 +118,7 @@ function main(){
         // warna canvasnya
         gl.clearColor(0, 0, 0, 0);
         // actually ngewarnain
-        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         // use shader program
         gl.useProgram(program);
