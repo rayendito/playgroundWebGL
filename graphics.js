@@ -27,11 +27,13 @@ function main(){
     //bikin program pake shaders itu tadi -- buat meng "supply" data cenah
     const program = createProgram(gl, vertexShader, fragmentShader);
     
-    //cari tempat where the attributes and uniforms at
+    //cari tempat where the attributes and uniforms and varyings at at
     const positionAttributeLocation = gl.getAttribLocation(program, "position");
+    const colorAttributeLocation = gl.getAttribLocation(program, "a_color");
     const matrixUniformLocation = gl.getUniformLocation(program, "matriks");
 
-    // TO-BE-DRAWN-PROPERTIES
+    // TO-BE-DRAWN-PROPERTIES //
+    // SHAPE
     // [1] bikin buffer
     var positionBuffer = gl.createBuffer();
     // [2] positionBuffer di-bind ke gl pake bindBuffer
@@ -39,6 +41,12 @@ function main(){
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
     // INITIALIZING A SHAPE (now pake yang fungsi setGeometry yg udah dibuat)
     setGeometry(gl);
+
+    // COLOR
+    var colorBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    // SET COLORS
+    setColors(gl, 47, 79, 79);
 
 
     // TRANSFORMATION-PROPERTIES
@@ -53,10 +61,11 @@ function main(){
 
     // Transformations
     const translation = [canvas.width/2, canvas.height/2, 0];
-    const rotation = [degToRad(40), degToRad(25), degToRad(325)];
+    const rotation = [degToRad(0), degToRad(0), degToRad(0)];
     const scale = [6, 6, 6];
     
     // drawing the initial cube
+    gl.enable(gl.CULL_FACE);
     drawCube();
 
     // markicob mouse events hihi :D
@@ -86,8 +95,8 @@ function main(){
 
         // x rotation on dY
         // far from perfect but hey, it rotates wkwk
-        rotation[0] = rotation[0] + (dY/10);
-        rotation[1] = rotation[1] - (dX/10);
+        rotation[0] = rotation[0] + (dY/60);
+        rotation[1] = rotation[1] - (dX/60);
         drawCube()
     }
 
@@ -109,15 +118,17 @@ function main(){
         // use shader program
         gl.useProgram(program);
 
-        // semacam kaya nyiapin "wadah" program shadernya
+        // GETTING THE DATA OWT OF NDE BUFFER
+        // POSITION
         // note that ini maksudnya gl : *enables vertex atrtib array* that is positionAttributeLocation,
         // yang udah disediain tadi
         gl.enableVertexAttribArray(positionAttributeLocation);
 
-        // kalo dari sumber, ini dipanggil lagi, but somehow it  still runs lmao keknya emang gaperlu
-        // gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        // Bind the position buffer.
+        // HAHA TERNYATA PERLU LAGI ok lesson learned jangan sotoy hihi
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-        // bawah ini verbatim
+        // how to get (verbatim)
         // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
         var size = 3;          // 3 components per iteration soalnya 3d, ada x y z
         var type = gl.FLOAT;   // the data is 32bit floats
@@ -126,10 +137,24 @@ function main(){
         var offset = 0;        // start at the beginning of the buffer
         gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset)
 
+        // COLOR
+        gl.enableVertexAttribArray(colorAttributeLocation);
+
+        // Bind the color buffer.
+        gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+
+        // how to get (verbatim juga)
+        size = 3;                 // 3 components per iteration soalnya 3d, ada x y z
+        type = gl.UNSIGNED_BYTE;  // the data is 8bit unsigned values
+        normalize = true;         // normalize the data (convert from 0-255 to 0-1)
+        stride = 0;               // 0 = move forward size * sizeof(type) each iteration to get the next position
+        offset = 0;               // start at the beginning of the buffer
+        gl.vertexAttribPointer(colorAttributeLocation, size, type, normalize, stride, offset);
+
         // bikin matriks transformasi finalnya abisitu apply
         var matrix = mat4.projection(gl.canvas.clientWidth, gl.canvas.clientHeight, 800);
         
-        //ubah pivot
+        //ubah titik tengahnya
         const ubahPivot = mat4.translation(-25, -25, -25);
 
         //transform
@@ -341,19 +366,19 @@ function setGeometry(gl){
         new Float32Array([
             // depan
             0, 0, 0,
-            50, 0, 0,
-            0, 50, 0,
             0, 50, 0,
             50, 0, 0,
+            0, 50, 0,
             50, 50, 0,
+            50, 0, 0,
 
             // kiri
             0, 0, 0,
-            0, 50, 0,
-            0, 0, 50,
             0, 0, 50,
             0, 50, 0,
+            0, 0, 50,
             0, 50, 50,
+            0, 50, 0,
 
             // kanan
             50, 0, 0,
@@ -388,6 +413,18 @@ function setGeometry(gl){
             50, 0 , 50]),
         gl.STATIC_DRAW
     );
+}
+
+function setColors(gl, R, G, B){
+    // buat array
+    var colorArray = []
+    // 36 means berapa input titik, kubus warnanya satu, ntar rencanaya kasi shading heheheh
+    for(var i = 0; i < 36; i++){
+        colorArray.push(R);
+        colorArray.push(G);
+        colorArray.push(B);
+    }
+    gl.bufferData(gl.ARRAY_BUFFER, new Uint8Array(colorArray), gl.STATIC_DRAW);
 }
 
 main();
