@@ -81,18 +81,19 @@ function main(){
     // kalo geser
     var mouseMove = function(e){
         if(!drag) return false;
-        var dX = (e.pageX-oldx)*360/canvas.width;
-        var dY = (e.pageY-oldy)*360/canvas.height;
+        var dX = degToRad((e.pageX-oldx)*360/canvas.width);
+        var dY = degToRad((e.pageY-oldy)*360/canvas.height);
+
         // x rotation on dY
-        rotation[0] = degToRad(((radToDeg(rotation[0])+dY))/2)
-        rotation[1] = degToRad(-((radToDeg(rotation[1])+dX))/1.2)
+        // far from perfect but hey, it rotates wkwk
+        rotation[0] = rotation[0] + (dY/10);
+        rotation[1] = rotation[1] - (dX/10);
         drawCube()
     }
 
     // adding event listeners
     canvas.addEventListener("mousedown", mouseDown, false);
     canvas.addEventListener("mouseup", mouseUp, false);
-    canvas.addEventListener("mouseout", mouseUp, false);
     canvas.addEventListener("mousemove", mouseMove, false);
 
     // draw cube function
