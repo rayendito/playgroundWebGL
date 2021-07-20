@@ -46,7 +46,12 @@ function main(){
     var colorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
     // SET COLORS
-    setColors(gl, 47, 79, 79);
+    const colorMat = [
+        [47, 79, 79],
+        [125, 187, 122],
+        [122, 164, 187]
+    ]
+    setColors(gl, colorMat);
 
 
     // TRANSFORMATION-PROPERTIES
@@ -377,6 +382,14 @@ function setGeometry(gl){
             50, 50, 0,
             50, 0, 0,
 
+            // belakang
+            0, 0, 50,
+            50, 0, 50,
+            0, 50, 50,
+            0, 50, 50,
+            50, 0, 50,
+            50, 50, 50,
+
             // kiri
             0, 0, 0,
             0, 0, 50,
@@ -391,14 +404,6 @@ function setGeometry(gl){
             50, 0 ,50,
             50, 0 ,50,
             50, 50, 0,
-            50, 50, 50,
-
-            // belakang
-            0, 0, 50,
-            50, 0, 50,
-            0, 50, 50,
-            0, 50, 50,
-            50, 0, 50,
             50, 50, 50,
 
             // atas
@@ -420,14 +425,16 @@ function setGeometry(gl){
     );
 }
 
-function setColors(gl, R, G, B){
+function setColors(gl, threeColorMatrix){
     // buat array
     var colorArray = []
     // 36 means berapa input titik, kubus warnanya satu, ntar rencanaya kasi shading heheheh
-    for(var i = 0; i < 36; i++){
-        colorArray.push(R);
-        colorArray.push(G);
-        colorArray.push(B);
+    for (var i = 0; i < 3; i++){
+        for(var j = 0; j < 12; j++){
+            colorArray.push(threeColorMatrix[i][0]);
+            colorArray.push(threeColorMatrix[i][1]);
+            colorArray.push(threeColorMatrix[i][2]);
+        }
     }
     gl.bufferData(gl.ARRAY_BUFFER, new Uint8Array(colorArray), gl.STATIC_DRAW);
 }
