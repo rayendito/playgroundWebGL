@@ -67,7 +67,7 @@ function main(){
     // Transformations
     const translation = [canvas.width/2, canvas.height/2, 0];
     const rotation = [degToRad(25), degToRad(25), degToRad(0)];
-    const scale = [3, 3, 3];
+    const scale = [5, 5, 5];
     
     // drawing the initial cube
 
@@ -181,7 +181,7 @@ function main(){
         //gambar beneran
         var primitiveType = gl.TRIANGLES;
         var offset = 0;
-        var count = 6*6*2*2; //too lazy to write 36 although i just did and 6*6 takes more chars :D
+        var count = (6*6*4+(6*4*4)); //too lazy to write 36 although i just did and 6*6 takes more chars :D
         gl.drawArrays(primitiveType, offset, count);
     }
 }
@@ -430,7 +430,7 @@ function setColors(gl, threeColorMatrix){
     var colorArray = []
     // 36 means berapa input titik, kubus warnanya satu, ntar rencanaya kasi shading heheheh
     for (var i = 0; i < 3; i++){
-        for(var j = 0; j < 48; j++){
+        for(var j = 0; j < (6*6*4+(6*4*4))/3; j++){
             colorArray.push(threeColorMatrix[i][0]);
             colorArray.push(threeColorMatrix[i][1]);
             colorArray.push(threeColorMatrix[i][2]);
@@ -441,8 +441,8 @@ function setColors(gl, threeColorMatrix){
 
 function setHollow(gl){
     const hollow = [
-        //TOP FRAME
-        //TOP DEPAN
+        //2 BAR ATAS
+        //BAR DEPAN
         //depan
         0, 10, 50,
         0, 0, 50,
@@ -491,7 +491,7 @@ function setHollow(gl){
         50, 10, 50,
         50, 10, 40,
 
-        //TOP BELAKANG
+        //BAR BELAKANG
         //depan
         0, 10, 10,
         0, 0, 10,
@@ -540,8 +540,8 @@ function setHollow(gl){
         50, 10, 10,
         50, 10, 0,
 
-        //BOTTOM FRAME
-        //BOTTOM DEPAN
+        // DUA BAR BAWAH
+        // BAR DEPAN
         //depan
         0, 50, 50,
         0, 40, 50,
@@ -590,7 +590,7 @@ function setHollow(gl){
         50, 50, 50,
         50, 50, 40,
 
-        //BOTTOM BELAKANG
+        //BAR BELAKANG
         //depan
         0, 50, 10,
         0, 40, 10,
@@ -637,7 +637,142 @@ function setHollow(gl){
         50, 50, 0,
         0, 50, 10,
         50, 50, 10,
-        50, 50, 0
+        50, 50, 0,
+
+        //DUA BAR PENDEK ATAS
+        //KIRI
+        // atas
+        0, 0, 40,
+        0, 0 ,10,
+        10, 0, 10,
+        0, 0, 40,
+        10, 0, 10,
+        10, 0, 40,
+
+        //bawah
+        0, 10, 40,
+        10, 10, 10,
+        0, 10 ,10,
+        0, 10, 40,
+        10, 10, 40,
+        10, 10, 10,
+
+        //kiri
+        0, 0, 10,
+        0, 10, 40,
+        0, 10, 10,
+        0, 10, 40,
+        0, 0, 10,
+        0, 0, 40,
+
+        //kanan
+        10, 0, 10,
+        10, 10, 10,
+        10, 10, 40,
+        10, 10, 40,
+        10, 0, 40,
+        10, 0, 10,
+
+        //KANAN
+        // atas
+        40, 0, 40,
+        40, 0 ,10,
+        50, 0, 10,
+        40, 0, 40,
+        50, 0, 10,
+        50, 0, 40,
+
+        //bawah
+        40, 10, 40,
+        50, 10, 10,
+        40, 10 ,10,
+        40, 10, 40,
+        50, 10, 40,
+        50, 10, 10,
+
+        //kiri
+        40, 0, 10,
+        40, 10, 40,
+        40, 10, 10,
+        40, 10, 40,
+        40, 0, 10,
+        40, 0, 40,
+
+        //kanan
+        50, 0, 10,
+        50, 10, 10,
+        50, 10, 40,
+        50, 10, 40,
+        50, 0, 40,
+        50, 0, 10,
+
+        //DUA BAR PENDEK BAWAH
+        //KIRI
+        // atas
+        0, 40, 40,
+        0, 40 ,10,
+        10, 40, 10,
+        0, 40, 40,
+        10, 40, 10,
+        10, 40, 40,
+
+        //bawah
+        0, 50, 40,
+        10, 50, 10,
+        0, 50 ,10,
+        0, 50, 40,
+        10, 50, 40,
+        10, 50, 10,
+
+        //kiri
+        0, 40, 10,
+        0, 50, 40,
+        0, 50, 10,
+        0, 50, 40,
+        0, 40, 10,
+        0, 40, 40,
+
+        //kanan
+        10, 40, 10,
+        10, 50, 10,
+        10, 50, 40,
+        10, 50, 40,
+        10, 40, 40,
+        10, 40, 10,
+
+        //KANAN
+        // atas
+        40, 40, 40,
+        40, 40 ,10,
+        50, 40, 10,
+        40, 40, 40,
+        50, 40, 10,
+        50, 40, 40,
+
+        //bawah
+        40, 50, 40,
+        50, 50, 10,
+        40, 50 ,10,
+        40, 50, 40,
+        50, 50, 40,
+        50, 50, 10,
+
+        //kiri
+        40, 40, 10,
+        40, 50, 40,
+        40, 50, 10,
+        40, 50, 40,
+        40, 40, 10,
+        40, 40, 40,
+
+        //kanan
+        50, 40, 10,
+        50, 50, 10,
+        50, 50, 40,
+        50, 50, 40,
+        50, 40, 40,
+        50, 40, 10
+
     ];
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(hollow), gl.STATIC_DRAW);
 }
