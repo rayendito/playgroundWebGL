@@ -181,7 +181,7 @@ function main(){
         //gambar beneran
         var primitiveType = gl.TRIANGLES;
         var offset = 0;
-        var count = (6*6*4+(6*4*4)); //too lazy to write 36 although i just did and 6*6 takes more chars :D
+        var count = (6*6*4+(6*4*8)); //too lazy to write 36 although i just did and 6*6 takes more chars :D
         gl.drawArrays(primitiveType, offset, count);
     }
 }
@@ -430,7 +430,7 @@ function setColors(gl, threeColorMatrix){
     var colorArray = []
     // 36 means berapa input titik, kubus warnanya satu, ntar rencanaya kasi shading heheheh
     for (var i = 0; i < 3; i++){
-        for(var j = 0; j < (6*6*4+(6*4*4))/3; j++){
+        for(var j = 0; j < (6*6*4+(6*4*8))/3; j++){
             colorArray.push(threeColorMatrix[i][0]);
             colorArray.push(threeColorMatrix[i][1]);
             colorArray.push(threeColorMatrix[i][2]);
@@ -771,8 +771,141 @@ function setHollow(gl){
         50, 50, 40,
         50, 50, 40,
         50, 40, 40,
-        50, 40, 10
+        50, 40, 10,
 
+        //DUA PILAR DEPAN
+        // PILAR KIRI
+        //depan
+        0, 10, 0,
+        0, 40, 0,
+        10, 40, 0,
+        10, 40, 0,
+        10, 10, 0,
+        0, 10, 0,
+
+        //belakang
+        0, 10, 10,
+        10, 40, 10,
+        0, 40, 10,
+        10, 40, 10,
+        0, 10, 10,
+        10, 10, 10,
+
+        //kiri
+        0, 10, 0,
+        0, 40, 0,
+        0, 40, 10,
+        0, 40, 10,
+        0, 10, 10,
+        0, 10, 0,
+
+        //kanan
+        10, 10, 0,
+        10, 40, 0,
+        10, 40, 10,
+        10, 40, 10,
+        10, 10, 10,
+        10, 10, 0,
+
+        //PILAR KANAN
+        //depan
+        40, 10, 0,
+        40, 40, 0,
+        50, 40, 0,
+        50, 40, 0,
+        50, 10, 0,
+        40, 10, 0,
+
+        //belakang
+        40, 10, 10,
+        50, 40, 10,
+        40, 40, 10,
+        50, 40, 10,
+        40, 10, 10,
+        50, 10, 10,
+
+        //kiri
+        40, 10, 0,
+        40, 40, 0,
+        40, 40, 10,
+        40, 40, 10,
+        40, 10, 10,
+        40, 10, 0,
+
+        //kanan
+        50, 10, 0,
+        50, 40, 0,
+        50, 40, 10,
+        50, 40, 10,
+        50, 10, 10,
+        50, 10, 0,
+
+        // DUA PILAR BELAKANG
+        // PILAR KIRI
+        //depan
+        0, 10, 40,
+        0, 40, 40,
+        10, 40, 40,
+        10, 40, 40,
+        10, 10, 40,
+        0, 10, 40,
+
+        //belakang
+        0, 10, 50,
+        10, 40, 50,
+        0, 40, 50,
+        10, 40, 50,
+        0, 10, 50,
+        10, 10, 50,
+
+        //kiri
+        0, 10, 40,
+        0, 40, 40,
+        0, 40, 50,
+        0, 40, 50,
+        0, 10, 50,
+        0, 10, 40,
+
+        //kanan
+        10, 10, 40,
+        10, 40, 40,
+        10, 40, 50,
+        10, 40, 50,
+        10, 10, 50,
+        10, 10, 40,
+
+        //PILAR KANAN
+        //depan
+        40, 10, 40,
+        40, 40, 40,
+        50, 40, 40,
+        50, 40, 40,
+        50, 10, 40,
+        40, 10, 40,
+
+        //belakang
+        40, 10, 50,
+        50, 40, 50,
+        40, 40, 50,
+        50, 40, 50,
+        40, 10, 50,
+        50, 10, 50,
+
+        //kiri
+        40, 10, 40,
+        40, 40, 40,
+        40, 40, 50,
+        40, 40, 50,
+        40, 10, 50,
+        40, 10, 40,
+
+        //kanan
+        50, 10, 40,
+        50, 40, 40,
+        50, 40, 50,
+        50, 40, 50,
+        50, 10, 50,
+        50, 10, 40
     ];
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(hollow), gl.STATIC_DRAW);
 }
