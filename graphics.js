@@ -40,7 +40,7 @@ function main(){
     // notice gl.ARRAY_BUFFER
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
     // INITIALIZING A SHAPE (now pake yang fungsi setGeometry yg udah dibuat)
-    setGeometry(gl);
+    setHollow(gl);
 
     // COLOR
     var colorBuffer = gl.createBuffer();
@@ -67,7 +67,7 @@ function main(){
     // Transformations
     const translation = [canvas.width/2, canvas.height/2, 0];
     const rotation = [degToRad(25), degToRad(25), degToRad(0)];
-    const scale = [6, 6, 6];
+    const scale = [3, 3, 3];
     
     // drawing the initial cube
 
@@ -107,7 +107,7 @@ function main(){
         // far from perfect but hey, it rotates wkwk
         rotation[0] = rotation[0] + (dY/60);
         rotation[1] = rotation[1] - (dX/60);
-        drawCube()
+        drawCube();
     }
 
     // adding event listeners
@@ -181,7 +181,7 @@ function main(){
         //gambar beneran
         var primitiveType = gl.TRIANGLES;
         var offset = 0;
-        var count = 6*6; //too lazy to write 36 although i just did and 6*6 takes more chars :D
+        var count = 6*6*2*2; //too lazy to write 36 although i just did and 6*6 takes more chars :D
         gl.drawArrays(primitiveType, offset, count);
     }
 }
@@ -430,13 +430,216 @@ function setColors(gl, threeColorMatrix){
     var colorArray = []
     // 36 means berapa input titik, kubus warnanya satu, ntar rencanaya kasi shading heheheh
     for (var i = 0; i < 3; i++){
-        for(var j = 0; j < 12; j++){
+        for(var j = 0; j < 48; j++){
             colorArray.push(threeColorMatrix[i][0]);
             colorArray.push(threeColorMatrix[i][1]);
             colorArray.push(threeColorMatrix[i][2]);
         }
     }
     gl.bufferData(gl.ARRAY_BUFFER, new Uint8Array(colorArray), gl.STATIC_DRAW);
+}
+
+function setHollow(gl){
+    const hollow = [
+        //TOP FRAME
+        //TOP DEPAN
+        //depan
+        0, 10, 50,
+        0, 0, 50,
+        50, 10, 50,
+        0, 0, 50,
+        50, 0, 50,
+        50, 10, 50,
+
+        //belakang
+        0, 10, 40,
+        50, 10, 40,
+        0, 0, 40,
+        0, 0, 40,
+        50, 10, 40,
+        50, 0, 40,
+
+        //kiri
+        0, 10, 40,
+        0, 0, 40,
+        0, 10, 50,
+        0, 0, 40,
+        0, 0, 50,
+        0, 10, 50,
+
+        //kanan
+        50, 0, 50,
+        50, 10, 40,
+        50, 10, 50,
+        50, 0, 50,
+        50, 0, 40,
+        50, 10, 40,
+
+        //atas
+        0, 0, 50,
+        0, 0, 40,
+        50, 0, 50,
+        0, 0, 40,
+        50, 0, 40,
+        50, 0, 50,
+
+        //bawah
+        0, 10, 40,
+        0, 10, 50,
+        50, 10, 40,
+        0, 10, 50,
+        50, 10, 50,
+        50, 10, 40,
+
+        //TOP BELAKANG
+        //depan
+        0, 10, 10,
+        0, 0, 10,
+        50, 10, 10,
+        0, 0, 10,
+        50, 0, 10,
+        50, 10, 10,
+
+        //belakang
+        0, 10, 0,
+        50, 10, 0,
+        0, 0, 0,
+        0, 0, 0,
+        50, 10, 0,
+        50, 0, 0,
+
+        //kiri
+        0, 10, 0,
+        0, 0, 0,
+        0, 10, 10,
+        0, 0, 0,
+        0, 0, 10,
+        0, 10, 10,
+
+        //kanan
+        50, 0, 10,
+        50, 10, 0,
+        50, 10, 10,
+        50, 0, 10,
+        50, 0, 0,
+        50, 10, 0,
+
+        //atas
+        0, 0, 10,
+        0, 0, 0,
+        50, 0, 10,
+        0, 0, 0,
+        50, 0, 0,
+        50, 0, 10,
+
+        //bawah
+        0, 10, 0,
+        0, 10, 10,
+        50, 10, 0,
+        0, 10, 10,
+        50, 10, 10,
+        50, 10, 0,
+
+        //BOTTOM FRAME
+        //BOTTOM DEPAN
+        //depan
+        0, 50, 50,
+        0, 40, 50,
+        50, 50, 50,
+        0, 40, 50,
+        50, 40, 50,
+        50, 50, 50,
+
+        //belakang
+        0, 50, 40,
+        50, 50, 40,
+        0, 40, 40,
+        0, 40, 40,
+        50, 50, 40,
+        50, 40, 40,
+
+        //kiri
+        0, 50, 40,
+        0, 40, 40,
+        0, 50, 50,
+        0, 40, 40,
+        0, 40, 50,
+        0, 50, 50,
+
+        //kanan
+        50, 40, 50,
+        50, 50, 40,
+        50, 50, 50,
+        50, 40, 50,
+        50, 40, 40,
+        50, 50, 40,
+
+        //atas
+        0, 40, 50,
+        0, 40, 40,
+        50, 40, 50,
+        0, 40, 40,
+        50, 40, 40,
+        50, 40, 50,
+
+        //bawah
+        0, 50, 40,
+        0, 50, 50,
+        50, 50, 40,
+        0, 50, 50,
+        50, 50, 50,
+        50, 50, 40,
+
+        //BOTTOM BELAKANG
+        //depan
+        0, 50, 10,
+        0, 40, 10,
+        50, 50, 10,
+        0, 40, 10,
+        50, 40, 10,
+        50, 50, 10,
+
+        //belakang
+        0, 50, 0,
+        50, 50, 0,
+        0, 40, 0,
+        0, 40, 0,
+        50, 50, 0,
+        50, 40, 0,
+
+        //kiri
+        0, 50, 0,
+        0, 40, 0,
+        0, 50, 10,
+        0, 40, 0,
+        0, 40, 10,
+        0, 50, 10,
+
+        //kanan
+        50, 40, 10,
+        50, 50, 0,
+        50, 50, 10,
+        50, 40, 10,
+        50, 40, 0,
+        50, 50, 0,
+
+        //atas
+        0, 40, 10,
+        0, 40, 0,
+        50, 40, 10,
+        0, 40, 0,
+        50, 40, 0,
+        50, 40, 10,
+
+        //bawah
+        0, 50, 0,
+        0, 50, 10,
+        50, 50, 0,
+        0, 50, 10,
+        50, 50, 10,
+        50, 50, 0
+    ];
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(hollow), gl.STATIC_DRAW);
 }
 
 main();
