@@ -21,9 +21,24 @@ body {
 	}
 }
 
+.headhead{
+  display: flex;
+  position: absolute;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.button{
+  border: none;
+  border-radius: 12px;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 32px;
+  color: whitesmoke;
+  width: 30%;
+}
+
 h1{
   text-align: center;
-  position: absolute;
   left: 0; 
   right: 0; 
   margin-left: auto; 
@@ -31,9 +46,16 @@ h1{
   font-family: 'Ubuntu', sans-serif;
 }
 
-
 #glCanvas{
     width : 100%;
     height : 100%;
     display : block;
+}
+
+#cubeBtn{
+  background-color: #118066; /* Green */
+}
+
+#hollowCubeBtn{
+  background-color: #163E58; /* Green */
 }

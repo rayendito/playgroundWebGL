@@ -38,9 +38,15 @@ function main(){
     var positionBuffer = gl.createBuffer();
     // [2] positionBuffer di-bind ke gl pake bindBuffer
     // notice gl.ARRAY_BUFFER
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     // INITIALIZING A SHAPE (now pake yang fungsi setGeometry yg udah dibuat)
-    setHollow(gl);
+    var guambar = 1; //initial mode
+    if(guambar == 0){
+        setGeometry(gl);
+    }
+    else{
+        setHollow(gl);
+    }
 
     // COLOR
     var colorBuffer = gl.createBuffer();
@@ -51,7 +57,7 @@ function main(){
         [125, 187, 122],
         [122, 164, 187]
     ]
-    setColors(gl, colorMat);
+    setColors(gl, colorMat, guambar);
 
 
     // TRANSFORMATION-PROPERTIES
@@ -76,7 +82,8 @@ function main(){
 
     // for a simple cube, ion think depth test needs to be enabled but lets just do
     gl.enable(gl.DEPTH_TEST);
-    drawCube();
+
+    drawCube(positionBuffer, colorBuffer);
 
     // markicob mouse events hihi :D
     // variables
@@ -107,16 +114,49 @@ function main(){
         // far from perfect but hey, it rotates wkwk
         rotation[0] = rotation[0] + (dY/60);
         rotation[1] = rotation[1] - (dX/60);
-        drawCube();
+        drawCube(positionBuffer, colorBuffer);
     }
 
-    // adding event listeners
+    //event listeners for the buttons
+    const cube = document.getElementById("cubeBtn");
+    cube.addEventListener("click", function(e){
+        guambar = 0; //0 kubus tok
+
+        gl.deleteBuffer(positionBuffer);
+        positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        setGeometry(gl);
+
+        gl.deleteBuffer(colorBuffer);
+        colorBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+        setColors(gl, colorMat, guambar);
+        drawCube(positionBuffer, colorBuffer);
+    });
+
+    const holCube = document.getElementById("hollowCubeBtn");
+    holCube.addEventListener("click", function(e){
+        guambar = 1; //0 kubus holoew
+        
+        gl.deleteBuffer(positionBuffer);
+        positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        setHollow(gl);
+
+        gl.deleteBuffer(colorBuffer);
+        colorBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+        setColors(gl, colorMat, guambar);
+        drawCube(positionBuffer, colorBuffer);
+    });
+
+    // event listeners for the shape
     canvas.addEventListener("mousedown", mouseDown, false);
     canvas.addEventListener("mouseup", mouseUp, false);
     canvas.addEventListener("mousemove", mouseMove, false);
 
     // draw cube function
-    function drawCube(){
+    function drawCube(posBuf, colBuf){
         //CANVAS-PROPERTIES
         // viewport tuh kek mana yg bakal keliatan akhirnya, not necessarily seukuran canvas
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
@@ -136,7 +176,7 @@ function main(){
 
         // Bind the position buffer.
         // HAHA TERNYATA PERLU LAGI ok lesson learned jangan sotoy hihi
-        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
 
         // how to get (verbatim)
         // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
@@ -151,7 +191,7 @@ function main(){
         gl.enableVertexAttribArray(colorAttributeLocation);
 
         // Bind the color buffer.
-        gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, colBuf);
 
         // how to get (verbatim juga)
         size = 3;                 // 3 components per iteration soalnya 3d, ada x y z
@@ -181,7 +221,12 @@ function main(){
         //gambar beneran
         var primitiveType = gl.TRIANGLES;
         var offset = 0;
-        var count = (6*6*4+(6*4*8)); //too lazy to write 36 although i just did and 6*6 takes more chars :D
+        if(guambar == 0){
+            var count = 6*6;//too lazy to write 36 although i just did and 6*6 takes more chars :D
+        }
+        else{
+            var count = (6*6*4+(6*4*8));
+        }
         gl.drawArrays(primitiveType, offset, count);
     }
 }
@@ -425,12 +470,18 @@ function setGeometry(gl){
     );
 }
 
-function setColors(gl, threeColorMatrix){
+function setColors(gl, threeColorMatrix, guambar){
     // buat array
     var colorArray = []
     // 36 means berapa input titik, kubus warnanya satu, ntar rencanaya kasi shading heheheh
+    if(guambar == 0){
+        var howMany = 12;
+    }
+    else{
+        var howMany = (6*6*4+(6*4*8))/3;
+    }
     for (var i = 0; i < 3; i++){
-        for(var j = 0; j < (6*6*4+(6*4*8))/3; j++){
+        for(var j = 0; j < howMany; j++){
             colorArray.push(threeColorMatrix[i][0]);
             colorArray.push(threeColorMatrix[i][1]);
             colorArray.push(threeColorMatrix[i][2]);
