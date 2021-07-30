@@ -67,7 +67,7 @@ function main(){
     // Transformations
     const translation = [canvas.width/2, canvas.height/2, 0];
     const rotation = [degToRad(25), degToRad(25), degToRad(0)];
-    const scale = [5, 5, 5];
+    const scale = [6, 6, 6];
     
     // drawing the initial cube
 
@@ -793,11 +793,11 @@ function setHollow(gl){
 
         //kiri
         0, 10, 0,
+        0, 40, 10,
         0, 40, 0,
         0, 40, 10,
-        0, 40, 10,
-        0, 10, 10,
         0, 10, 0,
+        0, 10, 10,
 
         //kanan
         10, 10, 0,
@@ -826,11 +826,11 @@ function setHollow(gl){
 
         //kiri
         40, 10, 0,
+        40, 40, 10,
         40, 40, 0,
         40, 40, 10,
-        40, 40, 10,
-        40, 10, 10,
         40, 10, 0,
+        40, 10, 10,
 
         //kanan
         50, 10, 0,
@@ -860,11 +860,11 @@ function setHollow(gl){
 
         //kiri
         0, 10, 40,
+        0, 40, 50,
         0, 40, 40,
         0, 40, 50,
-        0, 40, 50,
-        0, 10, 50,
         0, 10, 40,
+        0, 10, 50,
 
         //kanan
         10, 10, 40,
@@ -893,11 +893,11 @@ function setHollow(gl){
 
         //kiri
         40, 10, 40,
+        40, 40, 50,
         40, 40, 40,
         40, 40, 50,
-        40, 40, 50,
-        40, 10, 50,
         40, 10, 40,
+        40, 10, 50,
 
         //kanan
         50, 10, 40,
